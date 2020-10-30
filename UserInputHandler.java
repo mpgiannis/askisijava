@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.regex.*;
 
 public class UserInputHandler {
 
@@ -30,4 +31,20 @@ public boolean checkFOrfile(String string){
         }
     }
 }
+
+public boolean checkEpilogi(String s){
+    Pattern pattern = Pattern.compile("^\\D*\\d\\D*$");
+    Matcher m = pattern.matcher(s);
+    int number;
+    if((m.matches()) && ((Integer.parseInt(s)==1) || (Integer.parseInt(s)==2) ) )
+    {
+        return true;
+    }
+    else return false;
+}
+
+
+
+
+
 }

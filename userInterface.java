@@ -41,9 +41,17 @@ public class userInterface {
         eisodos_paragomeno = eisodos_xristi.nextLine();
         return eisodos_paragomeno;
 
-
     }
 
-
-
+    public static int get_method_crypto(){
+        int number;
+        System.out.println("Επέλεξε μέθοδο κρυπτογράφησης"+'\n'+"1 για AES"+"\n"+"2 για απλή μέθοδο");
+        String eisodos_epilogi;
+        eisodos_epilogi=eisodos_xristi.nextLine();
+        while(!checking.checkEpilogi(eisodos_epilogi)){
+            System.out.println("Επέλεξε μέθοδο κρυπτογράφησης"+'\n'+"1 για AES"+"\n"+"2 για απλή μέθοδο");
+            eisodos_epilogi=eisodos_xristi.nextLine();
+        }
+        return number=Integer.parseInt(eisodos_epilogi);
+    }
 }

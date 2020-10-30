@@ -1,4 +1,6 @@
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +11,7 @@ public class encrypt {
    File configuration;
    String onoma_arxeiou;
    String line;
-   Utilities util =new Utilities();
+   Utilities util = new Utilities();
 
     encrypt(File x, File a,String b){
         this.dedomena=x;
@@ -18,39 +20,25 @@ public class encrypt {
 
     }
 
-
-
-    public void doencrypt() throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException
-    {
+    public void doencrypt() throws IOException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         Scanner data = new Scanner(new FileReader(dedomena));
         data.useDelimiter("\\t");
         line = data.nextLine();
         int[] stiles_gia_kriptografisi=util.euresiPedion(line,configuration);
-        int arithmos_stilon=line.split("\t").length;
+        int k = userInterface.get_method_crypto();
         FileWriter newfile = new FileWriter(onoma_arxeiou);
         newfile.write(line + '\n');
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        SecretKey skey = kgen.generateKey();
-        Cipher ci = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        ci.init(Cipher.ENCRYPT_MODE, skey);
-        while (data.hasNextLine())
+        switch (k)
         {
-            line = data.nextLine();
-            String[] pinakas1 =line.split("\t");
-            for (int i = 0; i < arithmos_stilon; i++)
-            {
-                if (util.contains(stiles_gia_kriptografisi,i)) {
-                    byte[] input = pinakas1[i].getBytes("UTF-8");
-                    byte[] encoded = ci.doFinal(input);
-                    newfile.write(String.valueOf(encoded) + '\t');
-                }
-                else {newfile.write(pinakas1[i] + '\t');}
-            }
-            newfile.write('\n');
+            case 1:
+                Aes aes = new Aes(data,stiles_gia_kriptografisi,newfile);
+                aes.doaes();
+                break;
+            case 2:
+                SimpleMethod simple = new SimpleMethod(data,stiles_gia_kriptografisi,newfile);
+                simple.dosimple();
+                break;
         }
-        newfile.close();
-        data.close();
-
     }
 
 }
